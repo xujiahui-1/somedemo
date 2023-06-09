@@ -1,0 +1,5 @@
+package somedemo
+
+func main() {
+
+}
