@@ -1,4 +1,4 @@
-package _3pattern_demo
+package main
 
 import (
 	"fmt"
