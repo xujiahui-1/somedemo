@@ -1,4 +1,4 @@
-# function
+> 参考：https://studygolang.com/articles/35636
 ## Reader
 带有缓存的读取，从硬盘中读取数据时先写入缓存，
 - NewReaderSize():传入reader和size，返回一个带有缓冲的Reader
@@ -20,4 +20,4 @@
 - Size():返回的是Reader中buff的大小。而不是存了多少数据的大小
 ## Writer
 在将数据写入磁盘的时候先写入缓存，积攒多了再统一通过IO写入磁盘，减少了频繁的io操作
-- 实打实
+- NewWriter();返回一个bufio/Writer
