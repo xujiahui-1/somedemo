@@ -5,6 +5,7 @@ import (
 	"bytes"
 	"fmt"
 	"strings"
+	"sync"
 	"testing"
 )
 
@@ -66,4 +67,20 @@ func Test_ReadWrite(t *testing.T) {
 	rw := bufio.NewReadWriter(r, w)
 	readString, err := rw.ReadString('n')
 	fmt.Println(readString, err)
+}
+func Test_qqq(t *testing.T) {
+	var once sync.Once
+	onceBody := func() {
+		fmt.Println("Only once")
+	}
+	done := make(chan bool)
+	for i := 0; i < 10; i++ {
+		go func() {
+			once.Do(onceBody)
+			done <- true
+		}()
+	}
+	for i := 0; i < 10; i++ {
+		fmt.Println(<-done)
+	}
 }
