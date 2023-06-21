@@ -1,22 +1,37 @@
 package main
 
 func main() {
+
 }
 
-// n个节点的二叉搜索树的组合数=左0右2+左1右1+左2右0
-// dp【i】 += dp【j】 * dp【i-j】，是根据搜索树的特性
-func numTrees(n int) int {
-	//dp定义 n节点数：dp[n]:n个节点有几种情况
-	dp := make([]int, n+1)
-	//初始化
-	dp[0] = 1
-	dp[1] = 1
-	//递推公式 dp[3]=dp[0]*dp[2]+dp[1]*dp[1]+dp[2]*dp[0]
-	//dp[n]=
-	for i := 3; i < n+1; i++ {
-		for j := 1; j < i; j++ {
-			dp[i] += dp[j-1] * dp[i-j]
+// stones[i] 表示第 i 块石头的重量
+// 把石头分成尽量相等的两堆石头
+func lastStoneWeightII(stones []int) int {
+	//dp[j]=装满容量为j的背包的最大重量
+	//dp[j]=maxx(dp[j], dp[j-stones[i]]+stones[i])
+
+	sum := 0
+	for _, v := range stones {
+		sum += v
+	}
+	target := sum / 2 //小的
+	//dp
+	dp := make([]int, target+2)
+
+	//遍历
+	for i := 0; i < len(stones); i++ {
+		for j := target; j >= stones[i]; j-- {
+			dp[j] = maxx(dp[j], dp[j-stones[i]]+stones[i])
 		}
 	}
-	return dp[n]
+
+	return sum - 2*dp[target]
+
+}
+func maxx(a, b int) int {
+	if a > b {
+		return a
+	} else {
+		return b
+	}
 }
