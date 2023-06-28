@@ -33,6 +33,9 @@ import (
 
 7.APIs should be easy to use and hard to misuse. (API 应该易于使用且难以被误用) — Josh Bloch [3]
 
+8.首选可变参数函数而非 []T 参数
+	func anyPositive(first int, rest ...int) bool {
+	}
 
 */
 

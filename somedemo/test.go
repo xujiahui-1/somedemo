@@ -1,37 +1,40 @@
 package main
 
+import "math"
+
 func main() {
 
 }
 
-// stones[i] 表示第 i 块石头的重量
-// 把石头分成尽量相等的两堆石头
-func lastStoneWeightII(stones []int) int {
-	//dp[j]=装满容量为j的背包的最大重量
-	//dp[j]=maxx(dp[j], dp[j-stones[i]]+stones[i])
+//加加减减变成target有几种方法
+
+func findTargetSumWays(nums []int, target int) int {
+	// jia+jin=sum
+	//jia-jin=target
+	//jia=target+jin
+	//sum=target+jin+jin= target+jin*2
+	//jin=(sum-target)/2
 
 	sum := 0
-	for _, v := range stones {
-		sum += v
+	for _, i := range nums {
+		sum += i
 	}
-	target := sum / 2 //小的
-	//dp
-	dp := make([]int, target+2)
-
-	//遍历
-	for i := 0; i < len(stones); i++ {
-		for j := target; j >= stones[i]; j-- {
-			dp[j] = maxx(dp[j], dp[j-stones[i]]+stones[i])
+	if (sum-target)%2 == 1 {
+		return 0
+	}
+	if abs(target) > sum {
+		return 0
+	}
+	bagelength := (sum - target) / 2
+	dp := make([]int, bagelength+1)
+	dp[0] = 1
+	for i := 0; i < len(nums); i++ {
+		for j := bagelength; j >= nums[i]; j++ {
+			dp[j] += dp[j-nums[i]]
 		}
 	}
-
-	return sum - 2*dp[target]
-
+	return dp[bagelength]
 }
-func maxx(a, b int) int {
-	if a > b {
-		return a
-	} else {
-		return b
-	}
+func abs(x int) int {
+	return int(math.Abs(float64(x)))
 }
