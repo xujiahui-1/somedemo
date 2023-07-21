@@ -1,46 +1,31 @@
 package main
 
-import (
-	"fmt"
-	"strings"
-)
+import "math"
 
 func main() {
-	str := []string{"10000", "11000"}
-	findMaxForm(str, 5, 5)
 }
 
-// m =0   n =1
-func findMaxForm(strs []string, m int, n int) int {
-	//dp数组的定义： dp[m][n]代表:m个0，n个1 能存放多少个数字
-	dp := make([][]int, m+1)
-	for i, _ := range dp {
-		dp[i] = make([]int, n+1)
+// 给你一个整数 n ，返回 和为 n 的完全平方数的最少数量,
+// 最少数量 , 先取大数？
+func numSquares(n int) int {
+
+	//dp的定义，dp长度= n/2即可
+	//dp[i]= i最少被几个数的平方能凑成i
+	dp := make([]int, n+1)
+	for i := 1; i <= n; i++ {
+		dp[i] = math.MaxInt32
 	}
-
-	//初始化
-	dp[0][0] = 0
-	//递推公式
-	for i := 0; i < len(strs); i++ { //遍历数
-		//计算当前数子有几个0 几个1
-		num0 := strings.Count(strs[i], "0")
-		num1 := strings.Count(strs[i], "1")
-
-		//遍历背包    m =0   n =1
-		for j := m; j > 0; j-- {
-			for k := n; k > 0; k-- {
-				if j >= num0 && k >= num1 { //说明当前背包可以放在当前数字
-					dp[j][k] = max(dp[j][k], dp[j-num0][k-num1]+1)
-				}
-
-			}
+	//递推公式：dp[j] = min(dp[j - i * i] + 1, dp[j]);
+	for i := 1; i <= n; i++ { //金币，
+		// 遍历背包
+		for j := i * i; j <= n; j++ {
+			dp[j] = min(dp[j-i*i]+1, dp[j])
 		}
 	}
-	fmt.Println(dp)
-	return dp[m][n]
+	return dp[n]
 }
-func max(a, b int) int {
-	if a > b {
+func min(a, b int) int {
+	if a < b {
 		return a
 	}
 	return b
